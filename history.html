@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Prediction History | FloodAI{% endblock %}
+{% block page_title %}Prediction History{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+  <div class="panel-card">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+      <h5 class="mb-0"><i class="bi bi-clock-history"></i> Stored Predictions</h5>
+      <div class="d-flex gap-2 flex-wrap">
+        <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Search...">
+        <select id="filterRisk" class="form-select form-select-sm">
+          <option value="">All Risk Levels</option>
+          <option value="LOW">LOW</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="HIGH">HIGH</option>
+        </select>
+        <select id="filterPrediction" class="form-select form-select-sm">
+          <option value="">All Predictions</option>
+          <option value="FLOOD">FLOOD</option>
+          <option value="NO FLOOD">NO FLOOD</option>
+        </select>
+        <a href="/prediction-history/pdf" class="btn btn-sm btn-outline-primary" id="exportPdfBtn">
+          <i class="bi bi-file-earmark-pdf"></i> Export as PDF
+        </a>
+        <button id="clearHistoryBtn" class="btn btn-sm btn-outline-danger">
+          <i class="bi bi-trash"></i> Clear History
+        </button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Rainfall (mm)</th>
+            <th>River Level (m)</th>
+            <th>River Flow (m³/s)</th>
+            <th>Soil Moisture (%)</th>
+            <th>Flood Probability</th>
+            <th>Risk</th>
+            <th>Prediction</th>
+          </tr>
+        </thead>
+        <tbody id="historyTableBody">
+          <tr><td colspan="9" class="text-center text-muted py-4">Loading history...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-muted small mb-0" id="historyEmptyMsg" style="display:none;">
+      No prediction history yet. Run a prediction from the Flood Prediction page.
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/history.js') }}"></script>
+{% endblock %}

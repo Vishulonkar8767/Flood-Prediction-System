@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}About Project | FloodAI{% endblock %}
+{% block page_title %}About the Project{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+  <div class="panel-card">
+    <h4><i class="bi bi-water"></i> AI-Based Flood Prediction System</h4>
+    <p class="text-muted">An academic Machine Learning project that predicts flood risk from environmental
+      and weather parameters, with a full interactive web dashboard.</p>
+
+    <div class="about-section">
+      <h6><i class="bi bi-bullseye"></i> Problem Statement</h6>
+      <p>Floods are among the most destructive natural disasters, causing loss of life, property damage,
+        and disruption of infrastructure. Early and accurate flood risk prediction can help authorities and
+        communities take timely preventive action. Traditional forecasting methods are often slow or require
+        specialized hydrological models; this project explores whether a lightweight, data-driven ML model
+        can flag flood risk from commonly measured environmental parameters.</p>
+    </div>
+
+    <div class="about-section">
+      <h6><i class="bi bi-flag"></i> Objective</h6>
+      <p>To design, train, and deploy a machine learning classification model that predicts the probability
+        of flooding based on parameters such as rainfall, river water level, river flow, soil moisture and
+        more — and to present this in an interactive, easy-to-use web dashboard suitable for a live
+        academic demonstration.</p>
+    </div>
+
+    <div class="about-section">
+      <h6><i class="bi bi-database"></i> Dataset</h6>
+      <p>A synthetic dataset of 1,500 records was generated (see <code>generate_dataset.py</code>), covering
+        11 environmental parameters: Rainfall, Temperature, Humidity, River Water Level, River Flow, Soil
+        Moisture, Wind Speed, Atmospheric Pressure, Previous Rainfall, Drainage Capacity, and Elevation.
+        Rather than assigning random labels, the target <code>Flood</code> column is derived from a weighted
+        risk score built from these parameters (with realistic relationships — e.g. higher rainfall and
+        river level increase risk, higher drainage capacity and elevation reduce it), passed through a
+        sigmoid function with noise, so the resulting patterns are learnable yet realistic.</p>
+    </div>
+
+    <div class="about-section">
+      <h6><i class="bi bi-cpu"></i> Machine Learning Algorithms</h6>
+      <ul>
+        <li><strong>Random Forest Classifier</strong> — an ensemble of decision trees, generally the most
+          robust performer and used for feature-importance explainability.</li>
+        <li><strong>Decision Tree Classifier</strong> — a single interpretable tree-based model.</li>
+        <li><strong>Logistic Regression</strong> — a linear baseline model for binary classification.</li>
+      </ul>
+      <p>All three are trained and compared on Accuracy, Precision, Recall, F1-score and Confusion Matrix.
+        The best performer (by F1-score) is saved and used for live predictions.</p>
+    </div>
+
+    <div class="about-section">
+      <h6><i class="bi bi-tools"></i> Technologies Used</h6>
+      <div class="tech-badges">
+        <span class="badge tech-badge">Python</span>
+        <span class="badge tech-badge">Pandas</span>
+        <span class="badge tech-badge">NumPy</span>
+        <span class="badge tech-badge">Scikit-learn</span>
+        <span class="badge tech-badge">Matplotlib</span>
+        <span class="badge tech-badge">Seaborn</span>
+        <span class="badge tech-badge">Flask</span>
+        <span class="badge tech-badge">HTML5</span>
+        <span class="badge tech-badge">CSS3</span>
+        <span class="badge tech-badge">JavaScript</span>
+        <span class="badge tech-badge">Bootstrap 5</span>
+        <span class="badge tech-badge">Chart.js</span>
+        <span class="badge tech-badge">SQLite</span>
+        <span class="badge tech-badge">Joblib</span>
+      </div>
+    </div>
+
+    <div class="about-section">
+      <h6><i class="bi bi-diagram-3"></i> Prediction Methodology</h6>
+      <ol>
+        <li>User enters environmental parameters manually or generates a random realistic sample.</li>
+        <li>The frontend sends the values as JSON to the Flask <code>/predict</code> endpoint.</li>
+        <li>Values are validated, scaled with the saved <code>StandardScaler</code>, and passed to the
+          trained model.</li>
+        <li>The model returns class probabilities, from which a Flood/No-Flood label and a risk level
+          (LOW / MEDIUM / HIGH) are derived.</li>
+        <li>The result is displayed instantly and logged to the prediction history database.</li>
+      </ol>
+    </div>
+
+    <div class="row about-section">
+      <div class="col-md-4">
+        <h6><i class="bi bi-check-circle text-success"></i> Benefits</h6>
+        <ul>
+          <li>Fast, low-cost risk screening</li>
+          <li>Interactive, easy to demonstrate</li>
+          <li>Explainable via feature importance</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6><i class="bi bi-exclamation-circle text-warning"></i> Limitations</h6>
+        <ul>
+          <li>Trained on synthetic, not real, sensor data</li>
+          <li>Does not model complex hydrology/terrain</li>
+          <li>Not a replacement for official flood warnings</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6><i class="bi bi-rocket-takeoff text-primary"></i> Future Scope</h6>
+        <ul>
+          <li>Integrate real-time weather/river-gauge APIs</li>
+          <li>Add satellite/GIS elevation data</li>
+          <li>Deep learning (LSTM) for time-series forecasting</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Flood Prediction | FloodAI{% endblock %}
+{% block page_title %}Flood Prediction{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+
+  <div class="row g-4">
+    <!-- Input Form -->
+    <div class="col-lg-7">
+      <div class="panel-card" id="random-data-section">
+        <div class="panel-header">
+          <h5><i class="bi bi-sliders"></i> Environmental Parameters</h5>
+          <span class="badge bg-secondary-subtle text-secondary" id="scenarioBadge">No scenario yet</span>
+        </div>
+
+        <form id="predictionForm">
+          <div class="row g-3">
+
+            {% set fields = [
+              ("Rainfall", "Rainfall (mm)", feature_ranges["Rainfall"], "bi-cloud-rain-fill"),
+              ("Temperature", "Temperature (°C)", feature_ranges["Temperature"], "bi-thermometer-half"),
+              ("Humidity", "Humidity (%)", feature_ranges["Humidity"], "bi-droplet-half"),
+              ("River_Water_Level", "River Water Level (m)", feature_ranges["River_Water_Level"], "bi-water"),
+              ("River_Flow", "River Flow (m³/s)", feature_ranges["River_Flow"], "bi-arrow-down-up"),
+              ("Soil_Moisture", "Soil Moisture (%)", feature_ranges["Soil_Moisture"], "bi-moisture"),
+              ("Wind_Speed", "Wind Speed (km/h)", feature_ranges["Wind_Speed"], "bi-wind"),
+              ("Atmospheric_Pressure", "Atmospheric Pressure (hPa)", feature_ranges["Atmospheric_Pressure"], "bi-speedometer"),
+              ("Previous_Rainfall", "Previous Rainfall (mm)", feature_ranges["Previous_Rainfall"], "bi-cloud-drizzle"),
+              ("Drainage_Capacity", "Drainage Capacity (%)", feature_ranges["Drainage_Capacity"], "bi-signpost-split"),
+              ("Elevation", "Elevation (m)", feature_ranges["Elevation"], "bi-mountain"),
+            ] %}
+
+            {% for key, label, range, icon in fields %}
+            <div class="col-md-6">
+              <label class="form-label">
+                <i class="bi {{ icon }}"></i> {{ label }}
+                <span class="range-hint">({{ range[0] }}–{{ range[1] }})</span>
+              </label>
+              <div class="input-group">
+                <input type="number" step="0.1" class="form-control param-input"
+                       id="{{ key }}" name="{{ key }}"
+                       min="{{ range[0] }}" max="{{ range[1] }}"
+                       placeholder="e.g. {{ range[0] }} - {{ range[1] }}">
+              </div>
+              <input type="range" class="form-range param-slider" data-target="{{ key }}"
+                     min="{{ range[0] }}" max="{{ range[1] }}" step="0.1" value="{{ range[0] }}">
+            </div>
+            {% endfor %}
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <button type="button" id="predictBtn" class="btn btn-primary">
+              <i class="bi bi-play-fill"></i> Predict Flood
+            </button>
+            <button type="button" id="randomBtn" class="btn btn-info text-white">
+              <i class="bi bi-shuffle"></i> Generate Random Data
+            </button>
+            <button type="button" id="liveWeatherBtn" class="btn btn-success">
+              <i class="bi bi-broadcast"></i> Autofill from Live Weather
+            </button>
+            <button type="button" id="randomPredictBtn" class="btn btn-warning">
+              <i class="bi bi-lightning-fill"></i> Random Data + Predict
+            </button>
+            <button type="button" id="clearBtn" class="btn btn-outline-secondary">
+              <i class="bi bi-x-circle"></i> Clear
+            </button>
+          </div>
+
+          <div id="formAlert" class="alert alert-danger mt-3 d-none"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Result Panel -->
+    <div class="col-lg-5">
+      <div class="panel-card result-panel" id="resultPanel">
+        <div class="text-center text-muted py-5" id="resultPlaceholder">
+          <i class="bi bi-clipboard-data placeholder-icon"></i>
+          <p class="mt-3 mb-0">Enter or generate parameters, then click<br><strong>Predict Flood</strong> to see the result.</p>
+        </div>
+
+        <div id="resultContent" class="d-none">
+          <div id="resultBanner" class="result-banner">
+            <i class="bi" id="resultIcon"></i>
+            <span id="resultText"></span>
+          </div>
+
+          <div class="prob-block">
+            <div class="d-flex justify-content-between">
+              <span>Flood Probability</span>
+              <strong id="floodProbText">0%</strong>
+            </div>
+            <div class="progress custom-progress">
+              <div class="progress-bar bg-danger" id="floodProbBar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="prob-block">
+            <div class="d-flex justify-content-between">
+              <span>No-Flood Probability</span>
+              <strong id="noFloodProbText">0%</strong>
+            </div>
+            <div class="progress custom-progress">
+              <div class="progress-bar bg-success" id="noFloodProbBar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span>Risk Level</span>
+            <span class="risk-pill" id="riskPill">-</span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span>Model Used</span>
+            <span id="modelUsedText" class="text-muted">-</span>
+          </div>
+
+          <hr>
+          <h6 class="mb-2"><i class="bi bi-list-check"></i> Input Parameters</h6>
+          <div id="inputSummary" class="input-summary"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+{% endblock %}

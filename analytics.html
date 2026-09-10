@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Analytics | FloodAI{% endblock %}
+{% block page_title %}Analytics & Model Insights{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+  <div class="row g-4">
+
+    <div class="col-lg-6">
+      <div class="panel-card chart-card">
+        <h6><i class="bi bi-pie-chart-fill"></i> Flood vs No-Flood Distribution</h6>
+        <canvas id="floodDistChart"></canvas>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="panel-card chart-card">
+        <h6><i class="bi bi-graph-up"></i> Rainfall vs Flood Probability</h6>
+        <canvas id="rainfallChart"></canvas>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="panel-card chart-card">
+        <h6><i class="bi bi-water"></i> River Water Level vs Flood Cases</h6>
+        <canvas id="riverLevelChart"></canvas>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="panel-card chart-card">
+        <h6><i class="bi bi-bar-chart-line-fill"></i> Feature Importance</h6>
+        <canvas id="featureImportanceChart"></canvas>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="panel-card chart-card">
+        <h6><i class="bi bi-graph-up-arrow"></i> ROC Curve (AUC per model)</h6>
+        <canvas id="rocCurveChart"></canvas>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="panel-card chart-card">
+        <h6><i class="bi bi-grid-3x3"></i> Feature Correlation Heatmap</h6>
+        <canvas id="correlationHeatmap"></canvas>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="panel-card chart-card">
+        <h6><i class="bi bi-clipboard-data"></i> Model Comparison (Accuracy / Precision / Recall / F1)</h6>
+        <canvas id="modelComparisonChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}

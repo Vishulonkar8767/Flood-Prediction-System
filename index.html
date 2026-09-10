@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | FloodAI{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+  <div class="welcome-banner mb-4">
+    <div>
+      <h3><i class="bi bi-water"></i> AI-Based Flood Prediction System</h3>
+      <p class="mb-0 text-muted">Real-time flood risk assessment powered by machine learning</p>
+    </div>
+    <a href="{{ url_for('prediction_page') }}" class="btn btn-primary btn-lg">
+      <i class="bi bi-play-fill"></i> New Prediction
+    </a>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card card-blue">
+        <div class="stat-icon"><i class="bi bi-database-fill"></i></div>
+        <div class="stat-value" data-count="{{ stats.total_records }}">0</div>
+        <div class="stat-label">Total Dataset Records</div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card card-green">
+        <div class="stat-icon"><i class="bi bi-graph-up-arrow"></i></div>
+        <div class="stat-value" data-count="{{ stats.accuracy }}" data-suffix="%">0%</div>
+        <div class="stat-label">Model Accuracy ({{ stats.best_model }})</div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card card-red">
+        <div class="stat-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+        <div class="stat-value" data-count="{{ stats.flood_cases }}">0</div>
+        <div class="stat-label">Flood Cases in Dataset</div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card card-teal">
+        <div class="stat-icon"><i class="bi bi-shield-check"></i></div>
+        <div class="stat-value" data-count="{{ stats.no_flood_cases }}">0</div>
+        <div class="stat-label">No-Flood Cases in Dataset</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mt-1">
+    <div class="col-md-6">
+      <div class="info-panel">
+        <h6><i class="bi bi-activity"></i> Current Prediction Status</h6>
+        <p class="text-muted mb-2">No prediction run yet in this session.</p>
+        <a href="{{ url_for('prediction_page') }}" class="btn btn-outline-primary btn-sm">
+          <i class="bi bi-cloud-rain-heavy"></i> Run a Prediction
+        </a>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="info-panel">
+        <h6><i class="bi bi-sliders"></i> Input Parameters Tracked</h6>
+        <p class="stat-value small-value">{{ stats.num_parameters }}</p>
+        <p class="text-muted mb-0">Rainfall, Temperature, Humidity, River Level, River Flow, Soil Moisture,
+          Wind Speed, Pressure, Previous Rainfall, Drainage Capacity, Elevation</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mt-1">
+    <div class="col-12">
+      <div class="quick-links">
+        <a href="{{ url_for('prediction_page') }}" class="quick-link-card">
+          <i class="bi bi-cloud-rain-heavy"></i>
+          <span>Flood Prediction</span>
+        </a>
+        <a href="{{ url_for('analytics_page') }}" class="quick-link-card">
+          <i class="bi bi-bar-chart-line"></i>
+          <span>Analytics</span>
+        </a>
+        <a href="{{ url_for('history_page') }}" class="quick-link-card">
+          <i class="bi bi-clock-history"></i>
+          <span>Prediction History</span>
+        </a>
+        <a href="{{ url_for('about_page') }}" class="quick-link-card">
+          <i class="bi bi-info-circle"></i>
+          <span>About Project</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
